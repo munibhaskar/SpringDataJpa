@@ -2,24 +2,32 @@ package com.springdatajpa;
 
 import java.util.List;
 
+import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import com.springdatajpa.bo.Address;
+import com.springdatajpa.bo.FetchStudents;
 import com.springdatajpa.bo.Students;
+import com.springdatajpa.repoistory.FetchStudentsRepoistry;
 import com.springdatajpa.repoistory.StudentRepoistory;
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackages="com.springdatajpa.repoistory")
 public class DataJpaExampleApplication implements CommandLineRunner{
 	
 	
 	@Autowired
-	private StudentRepoistory studentRepoistry;
+	private StudentRepoistory studentRepoistry;	
 	
+	@Autowired
+	private FetchStudentsRepoistry fetchRepoistory;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(DataJpaExampleApplication.class, args);
@@ -85,6 +93,8 @@ public class DataJpaExampleApplication implements CommandLineRunner{
 		List<Students> notStudents = studentRepoistry.findByFirstNameNot("sony");
 		System.out.println(notStudents.size());
 		
+		List<FetchStudents> fetchStudents = fetchRepoistory.findFetchStudents("sony");
+		System.out.println(fetchStudents.size());
 		
 	}
 }
